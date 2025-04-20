@@ -25,9 +25,9 @@ export default async function handler(req, res) {
         if (error) return res.status(400).json({ error: error.message });
         return res.status(200).json({ user });
       } else if (action === 'google') {
-        const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+        const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
         if (error) return res.status(400).json({ error: error.message });
-        return res.status(200).json({ message: 'Redirecting to Google OAuth' });
+        return res.status(200).json({ message: 'Redirecting to Google OAuth', url: data.url });
       } else {
         return res.status(400).json({ error: 'Invalid action' });
       }
