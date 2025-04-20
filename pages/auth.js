@@ -9,37 +9,50 @@ export default function Auth() {
 
   const handleSignUp = async () => {
     setError('');
-    const res = await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, action: 'signup' }),
-    });
-    const data = await res.json();
-    if (data.error) setError(data.error);
-    else alert('Kiểm tra email để xác nhận!');
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, action: 'signup' }),
+      });
+      const data = await res.json();
+      if (data.error) setError(data.error);
+      else alert('Kiểm tra email để xác nhận!');
+    } catch (err) {
+      setError('Lỗi kết nối server');
+    }
   };
 
   const handleSignIn = async () => {
     setError('');
-    const res = await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, action: 'signin' }),
-    });
-    const data = await res.json();
-    if (data.error) setError(data.error);
-    else window.location.href = '/';
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, action: 'signin' }),
+      });
+      const data = await res.json();
+      if (data.error) setError(data.error);
+      else window.location.href = '/';
+    } catch (err) {
+      setError('Lỗi kết nối server');
+    }
   };
 
   const handleGoogleSignIn = async () => {
     setError('');
-    const res = await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'google' }),
-    });
-    const data = await res.json();
-    if (data.error) setError(data.error);
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'google' }),
+      });
+      const data = await res.json();
+      if (data.error) setError(data.error);
+      else if (data.url) window.location.href = data.url;
+    } catch (err) {
+      setError('Lỗi kết nối server');
+    }
   };
 
   return (
